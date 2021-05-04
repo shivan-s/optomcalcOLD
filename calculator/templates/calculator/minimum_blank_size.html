@@ -6,29 +6,44 @@
 
 {% block content %}
 
-	<form>
+	<form method="POST" action="">
+		{% csrf_token %}
 		<div class="container">
 			<div class="row">
 				<div class="col-sm">
 					<div class="form-floating mb-3">
-						<input type="number" class="form-control" id="floatingInput" placeholder="60">
-						<label for="floatingInput">Interpupillary Distance (mm)</label>
+						<input type="number" class="form-control" id="floatingInput" placeholder="32" name="right_pupillary_distance">
+						<label for="floatingInput">Right Pupillary Distance (mm)</label>
 					</div>
 					<div class="form-floating mb-3">
-						<input type="number" class="form-control" id="floatingInput" placeholder="50">
+						<input type="number" class="form-control" id="floatingInput" placeholder="32" name="left_pupillary_distance">
+						<label for="floatingInput">Left Pupillary Distance (mm)</label>
+					</div>
+					<div class="form-floating mb-3">
+						<input type="number" class="form-control" id="floatingInput" placeholder="50" name="frame_size">
 						<label for="floatingInput">Frame size (mm)</label>
 					</div>
 					<div class="form-floating mb-3">
-						<input type="number" class="form-control" id="floatingInput" placeholder="16">
+						<input type="number" class="form-control" id="floatingInput" placeholder="16" name="frame_bridge">
 						<label for="floatingInput">Frame bridge (mm)</label>
 					</div>
 					<div class="form-floating mb-3">
-						<input type="number" class="form-control" id="floatingInput" placeholder="52">
+						<input type="number" class="form-control" id="floatingInput" placeholder="52" name ="effective_diameter">
 						<label for="floatingInput">Effective Diameter (mm)</label>
 					</div>
 					<div>
 						<button type="submit" class="btn btn-primary">Calculate</button>
 					</div>
+					<div>
+						<h2>
+						{{ answer }}
+						</h2>
+					</div>
+
+				</div>
+				<div class="col-sm">
+					<i>Include picture of measurements</i>
+				</div>
 			</div>
 		</div>
 	</form>
