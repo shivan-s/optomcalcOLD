@@ -1,0 +1,81 @@
+{% extends 'calculator/base.html' %}
+
+{% block title %}Minimum Blank Size{% endblock %}
+
+{% block heading %}Minimum Blank Size{% endblock %}
+
+{% block content %}
+
+	<form method="POST" action="">
+		{% csrf_token %}
+		<div class="container">
+			<div class="row m-2">
+				<div class="col-sm">
+					<div class="form-floating mb-3">
+						<input type="number" class="form-control" id="floatingInput" placeholder="32" name="right_pupillary_distance">
+						<label for="floatingInput">Right Pupillary Distance (mm)</label>
+					</div>
+					<div class="form-floating mb-3">
+						<input type="number" class="form-control" id="floatingInput" placeholder="32" name="left_pupillary_distance">
+						<label for="floatingInput">Left Pupillary Distance (mm)</label>
+					</div>
+					<div class="form-floating mb-3">
+						<input type="number" class="form-control" id="floatingInput" placeholder="50" name="frame_size">
+						<label for="floatingInput">Frame size (mm)</label>
+					</div>
+					<div class="form-floating mb-3">
+						<input type="number" class="form-control" id="floatingInput" placeholder="16" name="frame_bridge">
+						<label for="floatingInput">Frame bridge (mm)</label>
+					</div>
+					<div class="form-floating mb-3">
+						<input type="number" class="form-control" id="floatingInput" placeholder="52" name ="effective_diameter">
+						<label for="floatingInput">Effective Diameter (mm)</label>
+					</div>
+					<div>
+						<button type="submit" class="btn btn-primary">Calculate</button>
+					</div>
+					<div>
+						<h2>
+						{{ answer }}
+						</h2>
+					</div>
+
+				</div>
+				<div class="col-sm">
+					<i>Include picture of measurements</i>
+				</div>
+			</div>
+		</div>
+	</form>
+
+
+	{# frame size #}
+	{#	frame bridge #}
+	{# frame effective #} 
+	{# diameter #}
+	{#	calculate #}
+	{# columnk #}
+	<div>
+		<input type="number" step="0.5" name="right_pd" hx-post="/mbs_calculate/" hx-target="#submitted">
+		<label>Right PD (mm)</label>
+	</div><div>
+		<input type="number" step="0.5" name="left_pd" hx-post="/mbs_calculate/" hx-target="#submitted">
+		<label>Left PD (mm)</label>
+	</div>
+	<div>
+		<input type="number" step="0.5" name="frame_size" hx-post="/mbs_calculate/" hx-target="#submitted">
+		<label>Frame Size (mm)</label>
+	</div>
+	<div>
+		<input type="number" step="0.5" name="frame_dbl" hx-post="/mbs_calculate/" hx-target="#submitted">
+		<label>Frame DBL</label>
+	</div>
+	<div>
+		<input type="number" step="0.5" name="effective_diameter" hx-post="/mbs_calculate/" hx-target="#submitted">
+		<label>Effective Diameter (mm)</label>
+	</div>
+	<div id="submitted">
+		<p>{{ answer }}</p>
+	</div>		
+
+{% endblock %}

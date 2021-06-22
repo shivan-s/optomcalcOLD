@@ -1,32 +1,46 @@
-from django.shortcuts import render
+import logging
+import math
+import os
 
+from django.shortcuts import render
+from django.views import View 
+from django.views.generic import TemplateView
 from django.http import HttpResponse
 
-def index(request):
-    return render(request, 'calculator/index.html')
+logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
-def minimum_blank_size(request):
-    interpupillary_distance = 55
-    if request.method == 'POST':
-        right_pupillary_distance = float(request.POST.get('right_pupillary_distance'))
-        left_pupillary_distance = float(request.POST.get('left_pupillary_distance'))
-        frame_size = request.POST.get('frame_size')
-        frame_bridge = request.POST.get('frame_bridge')
-        effective_diameter = float(request.POST.get('effective_diameter'))
-        
-        # source of information https://www.youtube.com/watch?v=5Gh1bPzB0JU
-        # minimum_blank_size = effective_diameter + 2 * decentration
-        # decentration = average_pd - mono_pd
+class IndexView(TemplateView):
+    template_name = 'calculator/index.html'
 
-        average_pd = ( float(right_pupillary_distance) + float(left_pupillary_distance) ) / 2
-        right_minimum_blank_size = effective_diameter + 2 * ( average_pd - right_pupillary_distance )
-        left_minimum_blank_size = effective_diameter + 2 *  ( average_pd - left_pupillary_distance )
+class MinimumBlankSizeView(TemplateView):
+    template_name = 'calculator/minimum_blank_size.html'
+    
+class MBSCalculate(View):
+    def post(self, request):
+        err = []
+        ref = (self.request.POST).dict()
+        logging.info(ref)
+        if '' in ref.values():
+            answer = 'Please enter all values'
+        else:
+            ref = {k:float(v) for k, v in ref.items()}
+            right_pd = ref['right_pd'] 
+            left_pd = ref['left_pd']
+            frame_size = ref['frame_size']
+            frame_dbl = ref['frame_dbl']
+            effective_diameter = ref['effective_diameter']
+        # source of information - https://www.insightnews.com.au/finding-the-minimum-lens-blank-size-part-2-2/
+            frame_pd = frame_size + frame_dbl
+            def minimum_blank_size(mono_pd: float):
+                """Calculates minimal blank size given a monocular pd"""
+                decentration = abs( (frame_pd / 2) - mono_pd)
+                return decentration + effective_diameter
 
-        answer = """
-        Right Minimum Blank Size: {right_minimum_blank_size}
-        Left Minimum Blank Size: {left_minimum_blank_size}
-        """.format(
-                right_minimum_blank_size=str(right_minimum_blank_size), 
-                left_minimum_blank_size=str(left_minimum_blank_size)) 
-        return render(request, 'calculator/minimum_blank_size.html', {'answer': answer })
-    return render(request, 'calculator/minimum_blank_size.html')
+            right_mbs = minimum_blank_size(right_pd)
+            left_mbs = minimum_blank_size(left_pd)
+
+            answer = f"""
+            Right Minimum Blank Size: {right_mbs} mm <br />
+            Left Minimum Blank Size: {left_mbs} mm
+            """
+        return HttpResponse(answer)

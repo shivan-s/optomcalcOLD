@@ -1,8 +1,9 @@
 from django.urls import path
 
-from . import views
+from .views import IndexView, MinimumBlankSizeView, MBSCalculate
 
 urlpatterns = [
-        path('', views.index, name='index'),
-        path('minimum_blank_size/', views.minimum_blank_size, name='minimum_blank_size'),
+        path('', IndexView.as_view()),
+        path('minimum_blank_size/', MinimumBlankSizeView.as_view()),
+        path('mbs_calculate/', MBSCalculate.as_view()),
         ]
