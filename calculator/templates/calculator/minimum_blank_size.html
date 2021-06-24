@@ -1,41 +1,72 @@
 {% extends 'calculator/base.html' %}
 
-{% block title %}Minimum Blank Size{% endblock %}
-
-{% block heading %}Minimum Blank Size{% endblock %}
 
 {% block content %}
 
-	<div hx-include="#mbs_input"
-		 hx-post="/mbs_calculate/"
-		 hx-target="#submitted"
-		 ht-swap="outerHTML">
-		<form id="mbs_input">
-			<div>
-				<input type="number" step="0.5" placeholder="31.0" name="right_pd">
-				<label>Right PD (mm)</label>
+	<h1 class="mt-1">{% block title %}Minimum Blank Size{% endblock %}</h1>
+	<div class="row">
+		<div hx-include="#mbs_input"
+		     hx-post="/mbs_calculate/"
+		     hx-target="#submitted"
+		     hx-swap="innerHTML"
+		     hx-trigger="keydown delay:250ms"
+		     class="col-md">
+			<form id="mbs_input">
+				<div class="row">
+					<div class="col-sm">
+						<label for="right_pd">Right PD (mm)</label>
+						<input class="form-control"
+						       type="number" 
+						       step="0.5" 
+						       min="0" 
+						       name="right_pd">
+					</div>
+					<div class="col-sm">
+						<label for="left_pd">Left PD (mm)</label>
+						<input class="form-control" 
+						       type="number" 
+						       step="0.5" 
+						       min="0" 
+						       name="left_pd">
+					</div>
+				</div>
+				<div class="col-sm">
+					<label for="frame_size">Frame Size (mm)</label>
+					<input class="form-control"
+					       type="number" 
+					       step="0.5"
+					       min="0"
+					       name="frame_size">
+				</div>
+				<div class="col-sm">
+					<label for="frame_dbl">Frame DBL (mm)</label>
+					<input class="form-control" 
+					       type="number" 
+					       step="0.5" 
+					       min="0" 
+					       name="frame_dbl">
+				</div>
+				<div class="col-sm">
+					<label for="effective_diameter">Effective Diameter (mm)</label>
+					<input class="form-control" 
+					       type="number" 
+					       step="0.5" 
+					       min="0" 
+					       name="effective_diameter">
+				</div>
+			</form>
+			<div class="mt-2">
+				<div id="submitted">
+					{{ answer }}
+				</div>
 			</div>
-			<div>
-				<input type="number" step="0.5" placeholder="31.0" name="left_pd">
-				<label>Left PD (mm)</label>
-			</div>
-			<div>
-				<input type="number" step="0.5" placeholder="15.0" name="frame_size">
-				<label>Frame Size (mm)</label>
-			</div>
-			<div>
-				<input type="number" step="0.5" placeholder="54.0" name="frame_dbl">
-				<label>Frame DBL</label>
-			</div>
-			<div>
-				<input type="number" step="0.5" placeholder="55.0" name="effective_diameter">
-				<label>Effective Diameter (mm)</label>
-			</div>
-		</form>
+
+		</div>
+		<div class="col mt-2">
+			<i>Content</i>
+			<p> Minimum blank size is important to determine if a stock lens or grind lenses is needed. 
+			This is important so we can quote the patient.</p>
+		</div>
 	</div>
-	
-	<div id="submitted">
-		<p>{{ answer }}</p>
-	</div>		
 
 {% endblock %}

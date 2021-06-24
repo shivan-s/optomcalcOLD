@@ -17,11 +17,27 @@ class MinimumBlankSizeView(TemplateView):
     
 class MBSCalculate(View):
     def post(self, request):
-        err = []
+
+        names = { 
+                'right_pd': 'Right PD',
+                'left_pd': 'Left PD',
+                'frame_size': 'Frame Size',
+                'frame_dbl': 'Frame DBL',
+                'effective_diameter': 'Effective Diameter'
+                }
+
         ref = (self.request.POST).dict()
-        logging.info(ref)
-        if '' in ref.values():
-            answer = 'Please enter all values'
+        
+        logging.info(ref) # all of the post data - form inputs
+        
+        if not all(ref.values()):
+            # checking for invalid values (nulls) and listing them
+            err = [names[k] for k, v in ref.items() if not v]
+            answer = f"""
+            <div class="alert alert-danger" role="alert">
+                Missing Values: <b>{'</b>, <b>'.join(err)}</b>
+            </div>
+            """
         else:
             ref = {k:float(v) for k, v in ref.items()}
             right_pd = ref['right_pd'] 
@@ -34,13 +50,26 @@ class MBSCalculate(View):
             def minimum_blank_size(mono_pd: float):
                 """Calculates minimal blank size given a monocular pd"""
                 decentration = abs( (frame_pd / 2) - mono_pd)
-                return decentration + effective_diameter
+                return decentration + effective_diameter + 2
 
             right_mbs = minimum_blank_size(right_pd)
             left_mbs = minimum_blank_size(left_pd)
 
             answer = f"""
-            Right Minimum Blank Size: {right_mbs} mm <br />
-            Left Minimum Blank Size: {left_mbs} mm
+            <table class="table table-striped table-hover"
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Right Minimum Blank Size:</th>
+                        <td>{right_mbs} mm </td>
+                    </tr>
+                    <tr> 
+                        <th scope="row">Left Minimum Blank Size:</th>
+                        <td>{left_mbs} mm</td>
+                    </tr>
+                </tbody>
+            </table>
             """
+            # TODO: create checks and ranges for appropriate sizes
+            # TODO: if mono pd is above 45, then split this between left and right
         return HttpResponse(answer)
