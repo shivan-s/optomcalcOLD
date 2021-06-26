@@ -1,9 +1,9 @@
 {% extends 'calculator/base.html' %}
 
-
 {% block content %}
 
 	<h1 class="mt-1">{% block title %}Minimum Blank Size{% endblock %}</h1>
+	<hr />
 	<div class="row">
 		<div hx-include="#mbs_input"
 		     hx-post="/mbs_calculate/"
@@ -15,7 +15,11 @@
 				<div class="row">
 					<div class="col-sm">
 						<label for="right_pd">Right PD (mm)</label>
-						<input class="form-control"
+						<input hx-get="/mbs_calculate/"
+						       hx-target="#pds"
+						       id="pds"
+						       class="form-control"
+						       value="{{ right_pd }}"
 						       type="number" 
 						       step="0.5" 
 						       min="0" 
@@ -24,6 +28,8 @@
 					<div class="col-sm">
 						<label for="left_pd">Left PD (mm)</label>
 						<input class="form-control" 
+						       id="pds"
+						       value="{{ left_pd }}"
 						       type="number" 
 						       step="0.5" 
 						       min="0" 
@@ -63,9 +69,15 @@
 
 		</div>
 		<div class="col mt-2">
-			<i>Content</i>
-			<p> Minimum blank size is important to determine if a stock lens or grind lenses is needed. 
-			This is important so we can quote the patient.</p>
+			<h3>Information</h3>
+			<p> <b>Minimum blank size (MBS)</b> is used to determine if a patient requires a stock or grind lens. 
+			This is required to quote the patient appropriately</p>
+			<p> To calculate <i>MBS</i>, calculate <i>Frame PD</i>.
+			$$Frame PD = Frame Size + Frame DBL$$ </p>
+			<p> From this, <i>Decentration</i> as the difference between half the <i>Frame PD</i> and <i>Monocular PD</i>.
+			$$Decentration = \left \lvert \frac{Frame PD}{2} - Monocular PD \right \rvert \\$$ </p>
+			<p> Finally, MBS is calculated by adding <i>Effective Diameter</i> and an arbitary 2mm is added to compensate for lens bleed.
+			$$Minimum Blank Size = Decentration + Effective Diameter + 2$$ </p>
 		</div>
 	</div>
 
