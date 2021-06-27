@@ -21,6 +21,7 @@ class MBSCalculate(View):
         self.bino_pd = 0
     
     def post(self, request):
+        
         def _minimum_blank_size(mono_pd: float):
             """
             Calculates minimal blank size given a monocular pd
@@ -35,13 +36,9 @@ class MBSCalculate(View):
                 'frame_dbl': 'Frame DBL',
                 'effective_diameter': 'Effective Diameter'
                 }
-
-        ref = (self.request.POST).dict()
         
-        logging.info(ref) # all of the post data - form inputs
+        ref = (self.request.POST).dict()
 
-        if ref['right_pd']:
-            self.bino_pd = float(ref['right_pd'])
         if not all(ref.values()):
             # checking for invalid values (nulls) and listing them
             err = [names[k] for k, v in ref.items() if not v]
@@ -59,11 +56,19 @@ class MBSCalculate(View):
             effective_diameter = ref['effective_diameter']
             # source of information - https://www.insightnews.com.au/finding-the-minimum-lens-blank-size-part-2-2/
             frame_pd = frame_size + frame_dbl
+            
+            warning = ''
+            if effective_diameter < frame_size:
+                warning = """
+                <div class="alert alert-warning" role="alert">
+                    Warning: <b>Effective Diameter</b> is smaller than <b>Frame Size</b>
+                </div>
+                """
              
             right_mbs = _minimum_blank_size(right_pd)
             left_mbs = _minimum_blank_size(left_pd)
 
-            answer = f"""
+            answer = warning + f"""
             <table class="table table-striped table-hover"
                 <thead></thead>
                 <tbody>
@@ -78,14 +83,64 @@ class MBSCalculate(View):
                 </tbody>
             </table>
             """
-            # TODO: create checks and ranges for appropriate sizes
-            # TODO: if mono pd is above 45, then split this between left and right
         return HttpResponse(answer)
     
     def get(self, request):
-        right_pd = 30
-        left_pd = 30
-        if self.bino_pd:
-            right_pd = self.bino_pd / 2
-            left_pd = self.bino_pd / 2
-        return HttpResponse(right_pd, left_pd)
+        logging.info('GET METHOD:')
+        logging.info('bino_pd: ' + str(self.bino_pd))  
+        logging.info((self.request.GET).dict()) 
+
+        ref = (self.request.GET).dict()
+
+        def _check_pd(mono_pd: str):
+            """
+            Checks if pd is above 45 and returns as float
+            """
+            if mono_pd:
+                mono_pd = float(mono_pd)
+                if mono_pd > 45:
+                    mono_pd = mono_pd / 2
+            return mono_pd
+
+        right_pd = ref['right_pd']
+        left_pd = ref['left_pd']
+        
+        if right_pd and not left_pd:
+            right_pd = _check_pd(right_pd)
+            left_pd = right_pd
+
+        if left_pd and not right_pd:
+            left_pd = _check_pd(left_pd)
+            right_pd = left_pd
+
+        output = f"""
+        	<div class="row"
+				     id="pds">
+					<div class="col-sm">
+						<label for="right_pd">Right PD (mm)</label>
+						<input hx-get="/mbs_calculate/"
+						       hx-target="#pds"
+                               hx-swap="innerHTML"
+						       class="form-control"
+						       value="{right_pd}"
+						       type="number" 
+						       step="0.5" 
+						       min="0" 
+						       name="right_pd">
+					</div>
+					<div class="col-sm">
+						<label for="left_pd">Left PD (mm)</label>
+						<input hx-get="/mbs_calculate"
+                               hx-target="#pds"
+                               hx-swap="innerHTML"
+                               class="form-control" 
+						       value="{left_pd}"
+						       type="number" 
+						       step="0.5" 
+						       min="0" 
+						       name="left_pd">
+					</div>
+				</div>
+                """
+
+        return HttpResponse(output)
