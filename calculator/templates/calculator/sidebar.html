@@ -1,30 +1,28 @@
 {% url 'index' as index_url %}
 {% url 'minimum_blank_size' as minimum_blank_size_url %}
+{% url 'back_vertex_power' as back_vertex_power_url %}
+{% url 'cylinder_transpose' as cylinder_transpose_url %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="{{ index_url }}">OptomCalc</a>
-  <button class "navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-	<li class="nav-item {% if request.path == minimum_blank_size_url %}active{% endif %}">
-	  <a class="nav-item" href="{{ minimum_blank_size_url }}">Optometry Calculations</a>
-	</li>
-      </ul>
-      <ul class="navbar-nav">
-	<li class="nav-item">
-	  <a class="nav-item" href="#">Other</a>
-	</li>
-	<li class="nav-item dropdown">
-	  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdowMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	    Dropdown link
-	  </a>
-	  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-	    <a class="dropdown-item" href="{{ minium_blank_size_url }}">Minimum Blank Size</a>
-	    <a class="dropdown-item" href="#">Other</a>
-	  </div>
-	</li>
-      </ul>
-    </div>
+<!-- Sidebar -->
+<nav class="bg-light" id="sidebar">
+	<div class="container">
+		<div class="sidebar-header">
+			<h3>OptomCalc</h3>
+		</div>
+
+		<ul class="navbar-nav">
+			<li class="nav-item {% if request.path == index_url %}active{% endif %}">
+				<a class="nav-link" href="{{ index_url }}">Index</a>
+			</li>
+			<li class="nav-item {% if request.path == minimum_blank_size_url %}active{% endif %}">
+				<a class="nav-link" href="{{ minimum_blank_size_url }}">Minimum Blank Size</a>
+			</li>
+			<li class="nav-item {% if request.path == back_vertex_power_url %}active{% endif %}">
+				<a class="nav-link" href="{{ back_vertex_power_url }}">Back Vertex Power</a>
+			</li>
+			<li class="nav-item {% if request.path == cylinder_transpose_url %}active{% endif %}">
+				<a class="nav-link" href="{{ cylinder_transpose_url }}">Cylinder Transpose</a>
+			</li>
+		</ul>
+	</div>
 </nav>

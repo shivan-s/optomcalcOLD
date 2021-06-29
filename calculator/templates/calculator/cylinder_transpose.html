@@ -1,0 +1,61 @@
+{% extends 'calculator/base.html' %}
+
+{% block content %}
+
+	<h1 class="mt-1">{% block title %}Cylinder Transpose{% endblock %}</h1>
+	<hr />
+	<div class="row">
+		<div hx-include="#ct_input"
+		     hx-post="/ct_calculate/"
+		     hx-target="#submitted"
+		     hx-swap="innerHTML"
+		     hx-trigger="keydown delay:250ms, click delay:250ms"
+		     class="col-md">
+			<form id="ct_input">
+				<div class="row">
+					<div class="col-sm">
+						<label for="sphere">Sphere (DS)</label>
+						<input class="form-control"
+						       type="number" 
+						       step="0.25" 
+						       name="sphere">
+					</div>
+					<div class="col-sm">
+						<label for="cylinder">Cylinder (DC)</label>
+						<input class="form-control" 
+						       type="number" 
+						       step="0.25" 
+						       name="cylinder">
+					</div>
+					x
+					<div class="col-sm">
+						<label for="axis">Axis (deg)</label>
+						<input class="form-control" 
+						       type="number" 
+							   min="0"
+							   max="180"
+						       step="0.5" 
+						       name="axis">
+					</div>
+				</div>
+			</form>
+			<div class="mt-2">
+				<div id="submitted">
+					{{ answer }}
+				</div>
+			</div>
+
+		</div>
+		<div class="col mt-2">
+			<h3>Information</h3>
+			<p> <b>Cylindrical Transposition</b> is used to switch between positive cylindrical form and negative cylindrical form and vice-versa.<p> 
+			To calculate:
+			<ol>
+				<li>Change the sign of the cylinder</li>
+				<li>Add cylinder to sphere</li>
+				<li>Change axis by 90 degrees</li>
+			</ol>
+		</div>
+	</div>
+
+{% endblock %}

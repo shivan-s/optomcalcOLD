@@ -2,14 +2,14 @@
 
 {% block content %}
 
-	<h1 class="mt-1">{% block title %}Minimum Blank Size{% endblock %}</h1>
+	<h1 class="mt-1">{% block title %}Back Vertex Power{% endblock %}</h1>
 	<hr />
 	<div class="row">
 		<div hx-include="#mbs_input"
 		     hx-post="/mbs_calculate/"
 		     hx-target="#submitted"
 		     hx-swap="innerHTML"
-		     hx-trigger="keydown delay:250ms, click delay:250ms"
+		     hx-trigger="keydown delay:250ms"
 		     class="col-md">
 			<form id="mbs_input">
 				<div class="row"

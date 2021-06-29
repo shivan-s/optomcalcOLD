@@ -4,24 +4,56 @@
 <html>
 	<head>
 		<link ref="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
+		<!-- self hosted css file -->
 		<link rel="stylesheet" type="text/css" href="{% static 'calculator/css/style.css' %}" />
+		<!-- Scrollbar Custom CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 		<title> OptomCalc | {% block title %}{% endblock %} </title>
+		<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+		<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 	</head>
-	<body class="container">
+	<body>
 		<header>
-			{% include 'calculator/sidebar.html' %}	
 		</header>
-		{% block content %}{% endblock %}
+		<div class="wrapper">
+			{% include 'calculator/sidebar.html' %}	
+			<div class="container content">
+				<nav class="navbar navbar-expand-lg navbar-light bg-light">
+					<div class="container-fluid">
+						<button type="button" id="sidebarCollapse" class="btn btn-info">
+							<i class="fas fa-align-left"></i>
+							<span>Toggle Sidebar</span>
+						</button>
+					</div>
+				</nav>
+				{% block content %}{% endblock %}
+			</div>
+			<div class="overlay"></div>
+		</div>
+		<!-- htmx -->
 		<script src="https://unpkg.com/htmx.org@1.1.0"></script>
 		<script>
 			document.body.addEventListener('htmx:configRequest', (event) => {
 				event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
 			})
 		</script>
+		<!-- LaTex/MathJax --> 
 		<script type="text/javascript" id="MathJax-script" async
 					       src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
 		</script>
-
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<!-- Popper.JS -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+		<!-- Bootstrap JS -->
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+		<!-- Custom JS -->
+		<script type="text/javascript" src="{% static 'calculator/js/script.js' %}">
+		</script>
+		<footer>
+			<div class="container">
+				Shivan Sivakumaran
+			</div>
+		</footer>
 
 	</body>
 </html>

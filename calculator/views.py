@@ -1,7 +1,6 @@
 import logging
 import math
 import os
-from typing import NamedTuple
 
 from django.shortcuts import render
 from django.views import View 
@@ -17,8 +16,6 @@ class MinimumBlankSizeView(TemplateView):
     template_name = 'calculator/minimum_blank_size.html'
     
 class MBSCalculate(View):
-    def __init__(self):
-        self.bino_pd = 0
     
     def post(self, request):
         
@@ -86,10 +83,6 @@ class MBSCalculate(View):
         return HttpResponse(answer)
     
     def get(self, request):
-        logging.info('GET METHOD:')
-        logging.info('bino_pd: ' + str(self.bino_pd))  
-        logging.info((self.request.GET).dict()) 
-
         ref = (self.request.GET).dict()
 
         def _check_pd(mono_pd: str):
@@ -144,3 +137,81 @@ class MBSCalculate(View):
                 """
 
         return HttpResponse(output)
+
+class BackVertexPowerView(TemplateView):
+    template_name = 'calculator/back_vertex_power.html'
+
+class BVPCalculate(View):
+    def get(self, request):
+        logging.info('GET')
+        output = [request]
+        return HttpResponse(output)
+
+    def post(self, request):
+        logging.info('POST')
+        output = [request]
+        return HttpResponse(output)
+
+class CylinderTranposeView(TemplateView):
+    template_name = 'calculator/cylinder_transpose.html'
+
+class CTCalculate(View):
+
+    def post(self, request):
+        """Calculates the cylindrical tranposition
+        """
+        names = { 
+                'sphere': 'Sphere',
+                'cylinder': 'Cylinder',
+                'axis': 'Axis',
+                }
+        
+        ref = (self.request.POST).dict()
+
+        if not all(ref.values()):
+            # checking for invalid values (nulls) and listing them
+            err = [names[k] for k, v in ref.items() if not v]
+            answer = f"""
+            <div class="alert alert-danger" role="alert">
+                Missing Values: <b>{'</b>, <b>'.join(err)}</b>
+            </div>
+            """
+        else:
+            ref = {k:float(v) for k, v in ref.items()}
+            sphere = ref['sphere'] 
+            cylinder = ref['cylinder']
+            axis = ref['axis']
+            
+            warning = ''
+            if cylinder == 0:
+                warning = """
+                <div class="alert alert-warning" role="alert">
+                    Warning: <b>Cylinder</b> is zero.
+                </div>
+                """
+            trans_sphere = sphere + cylinder
+            trans_cylinder = cylinder * -1
+            if axis <= 90:
+                trans_axis = axis + 90
+            elif axis > 90:
+                trans_axis = 180 - axis 
+
+            answer = warning + f"""
+            <table class="table table-striped table-hover"
+                <thead>
+                    <th scope="row">Sphere:</th>
+                    <th>Cylinder:</th>
+                    <th>Axis:</th>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>{trans_sphere}</td>
+                    <td>{trans_cylinder}</td>
+                    <td>{trans_axis}</td>
+                        <!-- <th scope="row">Right Minimum Blank Size:</th> -->
+                    </tr>
+                </tbody>
+            </table>
+            """
+        return HttpResponse(answer)
+

@@ -1,6 +1,6 @@
 .wrapper {
-	display: flex;
-	align-items: stretch;
+    display: flex;
+    align-items: stretch;
 }
 
 #sidebar {
@@ -9,18 +9,15 @@
 	min-height: 100vh;
 }
 
-#sidebar.active { 
+#sidebar.active {
 	margin-left: -250px;
 }
 
-a[data-toggle="collapse"] {
-	position: relative;
-}
-
-.dropdown-toggle::after {
-	display: block;
-	position:absolute;
-	top: 50%;
-	right: 20px;
-	transform: translateY(-50%);
-}
+@media (max-width: 768px) {
+	#sidebar {
+		margin-left: -250px;
+		}
+		#sidebar.active {
+			margin-left: 0;
+		}
+	}
