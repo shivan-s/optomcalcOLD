@@ -27,9 +27,14 @@
 					</div>
 				</nav>
 				{% block content %}{% endblock %}
-			</div>
-			<div class="overlay"></div>
+			</div>	
 		</div>
+		<footer class="footer mt-auto py-3 bg-light">
+			<div class="container">
+				<span class="text-muted">Shivan Sivakumaran -</span>
+				<small><a href="mailto:shivan@shivansivakumaran.com">contact</a></small>
+			</div>
+		</footer>	
 		<!-- htmx -->
 		<script src="https://unpkg.com/htmx.org@1.1.0"></script>
 		<script>
@@ -39,7 +44,7 @@
 		</script>
 		<!-- LaTex/MathJax --> 
 		<script type="text/javascript" id="MathJax-script" async
-					       src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
+									   src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
 		</script>
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 		<!-- Popper.JS -->
@@ -49,11 +54,5 @@
 		<!-- Custom JS -->
 		<script type="text/javascript" src="{% static 'calculator/js/script.js' %}">
 		</script>
-		<footer>
-			<div class="container">
-				Shivan Sivakumaran
-			</div>
-		</footer>
-
 	</body>
 </html>

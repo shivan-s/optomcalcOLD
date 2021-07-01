@@ -10,18 +10,18 @@
 			<h3>OptomCalc</h3>
 		</div>
 
-		<ul class="navbar-nav">
-			<li class="nav-item {% if request.path == index_url %}active{% endif %}">
-				<a class="nav-link" href="{{ index_url }}">Index</a>
+		<ul class="nav nav-pills">
+			<li class="nav-item">
+				<a class="nav-link {% if request.path == index_url %}active{% endif %}" aria-current="page" href="{{ index_url }}">Index</a>
 			</li>
-			<li class="nav-item {% if request.path == minimum_blank_size_url %}active{% endif %}">
-				<a class="nav-link" href="{{ minimum_blank_size_url }}">Minimum Blank Size</a>
+			<li class="nav-item">
+				<a class="nav-link {% if request.path == minimum_blank_size_url %}active{% endif %}" aria-current="page" href="{{ minimum_blank_size_url }}">Minimum Blank Size</a>
 			</li>
-			<li class="nav-item {% if request.path == back_vertex_power_url %}active{% endif %}">
-				<a class="nav-link" href="{{ back_vertex_power_url }}">Back Vertex Power</a>
+			<li class="nav-item">
+				<a class="nav-link {% if request.path == back_vertex_power_url %}active{% endif %}" aria-current="page" href="{{ back_vertex_power_url }}">Back Vertex Power</a>
 			</li>
-			<li class="nav-item {% if request.path == cylinder_transpose_url %}active{% endif %}">
-				<a class="nav-link" href="{{ cylinder_transpose_url }}">Cylinder Transpose</a>
+			<li class="nav-item"> 
+				<a class="nav-link {% if request.path == cylinder_transpose_url %}active{% endif %}" aria-current="page" href="{{ cylinder_transpose_url }}">Cylindrical Transposition</a>
 			</li>
 		</ul>
 	</div>
