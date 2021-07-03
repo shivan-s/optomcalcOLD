@@ -72,7 +72,7 @@ class MBSCalculate(View):
                 <tbody>
                     <tr>
                         <th scope="row">Right Minimum Blank Size:</th>
-                        <td>{right_mbs} mm </td>
+                        <td>{right_mbs} mm</td>
                     </tr>
                     <tr> 
                         <th scope="row">Left Minimum Blank Size:</th>
@@ -222,7 +222,7 @@ class BVPCalculate(View):
                         <th scope="row">Right:</th>
                         <td>
                             {"+" if new_right_sphere >= 0 else "-"}{abs(new_right_sphere): .2f} /
-                            {"+" if new_right_cylinder >= 0 else "-"}{abs(new_right_cylinder): .2f} x  
+                            {"+" if new_right_cylinder > 0 else "-"}{abs(new_right_cylinder): .2f} x  
                             {right_axis} 
                         </td>
                     </tr>
@@ -230,7 +230,7 @@ class BVPCalculate(View):
                         <th scope="row">Left:</th>
                         <td>
                             {"+" if new_left_sphere >= 0 else "-"}{abs(new_left_sphere): .2f} /
-                            {"+" if new_left_cylinder >= 0 else "-"}{abs(new_left_cylinder): .2f} x  
+                            {"+" if new_left_cylinder > 0 else "-"}{abs(new_left_cylinder): .2f} x  
                             {left_axis} 
                         </td>
                     </tr>
@@ -302,7 +302,7 @@ class CTCalculate(View):
                 <tbody>
                     <tr>
                     <td>{"+" if trans_sphere >= 0 else "-"}{abs(trans_sphere): .2f}</td>
-                    <td>{"+" if trans_cylinder >= 0 else "-"}{abs(trans_cylinder): .2f}</td>
+                    <td>{"+" if trans_cylinder > 0 else "-"}{abs(trans_cylinder): .2f}</td>
                     <td>{trans_axis}</td>
                         <!-- <th scope="row">Right Minimum Blank Size:</th> -->
                     </tr>

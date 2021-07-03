@@ -142,4 +142,4 @@ cython_debug/
 *.swo
 
 #custom
-`run.sh
+run.sh

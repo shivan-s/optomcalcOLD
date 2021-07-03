@@ -7,6 +7,9 @@ authors = ["ShivanS93 <shivan.sivakumaran@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 Django = "^3.2"
+python-dotenv = "^0.18.0"
+pytest-django = "^4.4.0"
+bs4 = "^0.0.1"
 
 [tool.poetry.dev-dependencies]
 
