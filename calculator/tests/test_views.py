@@ -17,13 +17,13 @@ from calculator.views import (
 class TestIndexView:
     def test_loads_page(self):
         client = Client()
-        response = client.get(reverse('index'))
+        response = client.get(reverse('index'), follow=True, secure=True)
         assert response.status_code == 200
 
 class TestMinimumBlankSizeView:
     def test_loads_page(self):
         client = Client()
-        response = client.get(reverse('minimum_blank_size'))
+        response = client.get(reverse('minimum_blank_size'), follow=True, secure=True)
         assert response.status_code == 200
 
 class TestMBSCalculate:
@@ -35,7 +35,7 @@ class TestMBSCalculate:
             'frame_size': '53',
             'frame_dbl': '16',
             'effective_diameter': '55'
-            })
+            }, follow=True, secure=True)
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
         soup_result = [_.get_text() for _ in soup.find_all('td')]
         assert response.status_code == 200
@@ -46,7 +46,7 @@ class TestMBSCalculate:
         response = client.get(reverse('mbs_calculate'), {
             'right_pd': '60',
             'left_pd': ''
-            })
+            }, follow=True, secure=True)
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
         soup_result = [_['value'] for _ in soup.find_all('input')]
         assert response.status_code == 200
@@ -55,7 +55,7 @@ class TestMBSCalculate:
 class TestBackVertexPowerView:
     def test_loads_page(self):
         client = Client()
-        response = client.get(reverse('back_vertex_power'))
+        response = client.get(reverse('back_vertex_power'), follow=True, secure=True)
         assert response.status_code == 200
 
 class TestBVPCalculateView:
@@ -68,7 +68,7 @@ class TestBVPCalculateView:
             'left_cylinder': '-0.00',
             'original_bvd': '12',
             'new_bvd': '0',
-            }) # only including important features
+            }, follow=True, secure=True) # only including important features
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
         soup_result = [_.get_text().replace('\n', '').replace(' ', '').strip() for _ in soup.find_all('td')]
         assert response.status_code == 200
@@ -77,7 +77,7 @@ class TestBVPCalculateView:
 class TestCylinderTransposeView:
     def test_loads_page(self):
         client = Client()
-        response = client.get(reverse('cylinder_transpose'))
+        response = client.get(reverse('cylinder_transpose'), follow=True, secure=True)
         assert response.status_code == 200
     
 class TestCTCalculateView:
@@ -87,7 +87,7 @@ class TestCTCalculateView:
             'sphere': '+1.00',
             'cylinder': '+2.00',
             'axis': '90',
-            }) # only including important features
+            }, follow=True, secure=True) 
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
         soup_result = [_.get_text() for _ in soup.find_all('td')]
         assert response.status_code == 200

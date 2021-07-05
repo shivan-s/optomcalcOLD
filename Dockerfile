@@ -1,19 +1,26 @@
-FROM ubuntu:focal
+FROM python:slim
 
-RUN : \
-	&& apt-get update \
-	&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-		python3 \
-		pip \
-	&& pip install 'poetry==1.1.6'
+WORKDIR /usr/src/app
 
-RUN mkdir -p /home/shivan/optomcalc/
+ENV PYTHONDONTWRITEBYTECODE 1\
+  PYTHONUNBUFFERED 1 \
+  PYTHONHASHSEED=random \
+  PIP_NO_CACHE_DIR=off \
+  PIP_DISABLE_PIP_VERSION_CHECK=on \
+  PIP_DEFAULT_TIMEOUT=100 \
+  POETRY_VERSION=1.1.6
 
-WORKDIR home/shivan/optomcalc/
+RUN pip install --upgrade pip \
+	&& pip install "poetry==$POETRY_VERSION"
 
-COPY poetry.lock pyproject.toml ${PROJECT_DIR}/
 
-RUN poetry install
+COPY poetry.lock pyproject.toml /optomcalc/
+
+RUN poetry config virtualenvs.create false \
+  && poetry install $(test "$YOUR_ENV" == production && echo "--no-dev") --no-interaction --no-ansi
+
+COPY ./entrypoint.sh .
 
 COPY . . 
 
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

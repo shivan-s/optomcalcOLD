@@ -1,9 +1,20 @@
-version: '3'
+version: '3.7'
 
 services:
         web:
-                container_name: optomcalc
-                build: .
-                command: poetry run python manage.py runserver 0.0.0.0:8000
+                volumes:
+                        - ./app/:/usr/src/app/
+                        - static:/static
+                env_file:
+                        - .env
+                build: ./app
                 ports:
                         - 8000:8000
+        nginx:
+                build: ./nginx
+                volumes:
+                        - static:/static
+                depends_on:
+                        - web
+volumes:
+        static:
