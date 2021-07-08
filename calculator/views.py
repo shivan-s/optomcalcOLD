@@ -86,26 +86,16 @@ class MBSCalculate(View):
     def get(self, request):
         ref = (self.request.GET).dict()
 
-        def _check_pd(mono_pd: str):
-            """
-            Checks if pd is above 45 and returns as float
-            """
-            if mono_pd:
-                mono_pd = float(mono_pd)
-                if mono_pd > 45:
-                    mono_pd = mono_pd / 2
-            return mono_pd
-
+        # if enters above 50 in right_pd, then this is likely a 
+        # bino pd and needs to be halved
         right_pd = ref['right_pd']
         left_pd = ref['left_pd']
 
-        if right_pd and not left_pd:
-            right_pd = _check_pd(right_pd)
-            left_pd = right_pd
-
-        if left_pd and not right_pd:
-            left_pd = _check_pd(left_pd)
-            right_pd = left_pd
+        if right_pd: 
+            right_pd = float(right_pd)
+            if right_pd > 50:
+                right_pd = right_pd / 2
+                left_pd = right_pd
 
         output = f"""
             <div class="row"
@@ -146,12 +136,14 @@ class BVPCalculate(View):
 
     def post(self, request):
 
+        warning = ''
+
         names = { 
                 'right_sphere': 'Right Sphere',
                 'right_cylinder': 'Right Cylinder',
                 'right_axis': 'Right Axis',
-                'left_sphere': 'Right Sphere',
-                'left_cylinder': 'Right Cylinder',
+                'left_sphere': 'Left Sphere',
+                'left_cylinder': 'Left Cylinder',
                 'left_axis': 'Right Axis',
                 'original_bvd': 'Orignal BVD',
                 'new_bvd': 'New BVD'
@@ -168,10 +160,13 @@ class BVPCalculate(View):
                 'new_bvd': ref['new_bvd'],
                 }
 
+        # checks to see if sphere and cyl entered
+        # minimum needed to activate script is sphere, cyl for one eye, orignal bvd and new bvd 
+
         right_entered = all([ref['right_sphere'], ref['right_cylinder']])  
-        left_entered = all([ref['left_sphere'], ref['right_cylinder']])
+        left_entered = all([ref['left_sphere'], ref['left_cylinder']])
         
-        if not ref['original_bvd'] or not ref['new_bvd'] or not right_entered or not left_entered:
+        if not ref['original_bvd'] or not ref['new_bvd'] and ( not right_entered or not left_entered ):
             # checking for empty fields
             err = [names[k] for k, v in important_features.items() if not v]
             answer = f"""
@@ -179,13 +174,14 @@ class BVPCalculate(View):
                 Missing Values: <b>{'</b>, <b>'.join(err)}</b>
             </div>
             """
+            return HttpResponse(answer)
         else:
             ref = {k:float(v) for k, v in ref.items() if v}
-            right_sphere = ref['right_sphere'] 
-            right_cylinder = ref['right_cylinder']
+            right_sphere = ref.get('right_sphere')
+            right_cylinder = ref.get('right_cylinder')
             right_axis = ref.get('right_axis')
-            left_sphere = ref['left_sphere'] 
-            left_cylinder = ref['left_cylinder']
+            left_sphere = ref.get('left_sphere') 
+            left_cylinder = ref.get('left_cylinder')
             left_axis = ref.get('left_axis')
             original_bvd = ref['original_bvd']
             new_bvd = ref['new_bvd']
@@ -193,7 +189,7 @@ class BVPCalculate(View):
             if not all([right_axis, left_axis]):
                 warning = """
                 <div class="alert alert-warning" role="alert">
-                    Warning: <b>Cylinder</b> not entered returns <b>None</b>.
+                    Warning: <b>Axis</b> not entered returns <b>None</b>.
                 </div>
                 """
 
@@ -210,9 +206,23 @@ class BVPCalculate(View):
                 new_meridian_cyl = new_meridian_cyl - new_meridian_sph
 
                 return new_meridian_sph, new_meridian_cyl
-            
-            new_right_sphere, new_right_cylinder = _calculate_vertex_power(right_sphere, right_cylinder)
-            new_left_sphere, new_left_cylinder  = _calculate_vertex_power(left_sphere, left_cylinder)
+
+            right_answer, left_answer = '', ''
+
+            if right_entered:
+                new_right_sphere, new_right_cylinder = _calculate_vertex_power(right_sphere, right_cylinder)
+                right_answer = f"""
+                            {"+" if new_right_sphere >= 0 else "-"}{abs(new_right_sphere): .2f} /
+                            {"+" if new_right_cylinder > 0 else "-"}{abs(new_right_cylinder): .2f} x  
+                            {right_axis} 
+                """
+            if left_entered:
+                new_left_sphere, new_left_cylinder  = _calculate_vertex_power(left_sphere, left_cylinder)
+                left_answer = f"""
+                            {"+" if new_left_sphere >= 0 else "-"}{abs(new_left_sphere): .2f} /
+                            {"+" if new_left_cylinder > 0 else "-"}{abs(new_left_cylinder): .2f} x  
+                            {left_axis}
+                """
 
             answer = warning + f"""
             <table class="table table-striped table-hover"
@@ -221,17 +231,13 @@ class BVPCalculate(View):
                     <tr>
                         <th scope="row">Right:</th>
                         <td>
-                            {"+" if new_right_sphere >= 0 else "-"}{abs(new_right_sphere): .2f} /
-                            {"+" if new_right_cylinder > 0 else "-"}{abs(new_right_cylinder): .2f} x  
-                            {right_axis} 
+                            {right_answer} 
                         </td>
                     </tr>
                     <tr> 
                         <th scope="row">Left:</th>
                         <td>
-                            {"+" if new_left_sphere >= 0 else "-"}{abs(new_left_sphere): .2f} /
-                            {"+" if new_left_cylinder > 0 else "-"}{abs(new_left_cylinder): .2f} x  
-                            {left_axis} 
+                            {left_answer} 
                         </td>
                     </tr>
                 </tbody>

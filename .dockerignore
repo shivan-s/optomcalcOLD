@@ -19,8 +19,6 @@ dist
 docs
 env
 logs
-optomcalc/settings/local.py
-optomcalc/node_modules
 web/media
 web/static/CACHE
 stats
