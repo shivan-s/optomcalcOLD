@@ -70,8 +70,11 @@ WSGI_APPLICATION = 'optomcalc.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD')
     }
 }
 
@@ -124,19 +127,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Production settings
 # DEBUG and ALLOWED_HOSTS set above
 
-CSRF_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
 
-SESSION_COOKIE_SECURE = True
+#SESSION_COOKIE_SECURE = True
 
-SECURE_SSL_REDIRECT = True
+#SECURE_SSL_REDIRECT = True
 
-SECURE_HSTS_SECONDS = 3600
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', True)
 
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+#SECURE_HSTS_SECONDS = 3600
 
-SECURE_HSTS_PRELOAD = True
+#SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
-SRF_COOKIE_SECURE = True
+#SECURE_HSTS_PRELOAD = True
+
 
 # Development override
 if os.environ.get('DJANGO_DEVELOPMENT') == 'yes':

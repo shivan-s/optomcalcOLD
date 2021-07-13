@@ -1,12 +1,16 @@
 # OptomCalc
+*Calculations for Optometry*
+---
+## Introduction
 
-This a website that contains calculations relevent to optometrists
+The is a website that contains common calculations performed by Optometrists and Optical Dispensers.
 
-# Technologies
-- Python 3.7
-- Django 3.2
-- Poetry
+[The site is live](https://optomcalc.shivan.xyz)
 
-# TODO:
-1. Use htmx to create a form
-2. fix class based views
+## TODO:
+
+There are plenty. Check it out on the issues page.
+
+## Feedback
+
+Please [contact me](mailto:shivan@shivansivakumaran.com) if you have any questions.
