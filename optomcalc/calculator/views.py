@@ -200,6 +200,10 @@ class BVPCalculate(View):
                 meridian_sph = sphere
                 meridian_cyl = sphere + cylinder
 
+                # FIXME: divide by zero hotfix
+                if meridian_cyl == 0:
+                    meridian_cyl = 1
+
                 new_meridian_sph = 1 / ((1 / meridian_sph) - ((original_bvd - new_bvd)*10**-3))
                 new_meridian_cyl = 1 / ((1 / meridian_cyl) - ((original_bvd - new_bvd)*10**-3))
                 
