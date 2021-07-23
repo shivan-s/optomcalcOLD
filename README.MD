@@ -11,6 +11,22 @@ The is a website that contains common calculations performed by Optometrists and
 
 ## How this works
 
+### Setting up the .env files
+
+Below is the .env files which is stored in `/optomcalc/optomcalc/optomcalc` (the same directory as `settings.py`).
+
+```
+SECRET_KEY=<django secret key> 
+  
+# Database variables 
+POSTGRES_DB=<database name>
+POSTGRES_USER=<username>
+POSTGRES_PASSWORD=<password>
+POSTGRES_HOST=<host e.g. 127.0.0.1>
+POSTGRES_PORT=<port number e.g. 5432>
+```
+
+
 ### Production Set up
 
 Ansible playbooks are used to set up the application on a 'production' server. [The code for this can be found here](https://github.com/shivans93/ansible).
