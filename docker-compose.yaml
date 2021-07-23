@@ -9,6 +9,7 @@ services:
                         - ./optomcalc/optomcalc/.env
                 volumes:
                         - ./db-data/:/var/lib/postgresql/data/
+                restart: always
         web:
                 container_name: web
                 volumes:
@@ -23,5 +24,6 @@ services:
                         - "8000:8000"
                 depends_on:
                         - db
+                restart: always
 volumes:
         static:
