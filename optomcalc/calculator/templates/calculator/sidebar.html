@@ -2,6 +2,7 @@
 {% url 'minimum_blank_size' as minimum_blank_size_url %}
 {% url 'back_vertex_power' as back_vertex_power_url %}
 {% url 'cylinder_transpose' as cylinder_transpose_url %}
+{% url 'mean_ocular_perfusion_pressure' as mean_ocular_perfusion_pressure_url %}
 
 <!-- Sidebar -->
 <nav class="bg-light" id="sidebar">
@@ -22,6 +23,9 @@
 			</li>
 			<li class="nav-item"> 
 				<a class="nav-link {% if request.path == cylinder_transpose_url %}active{% endif %}" aria-current="page" href="{{ cylinder_transpose_url }}">Cylindrical Transposition</a>
+			</li>
+			<li class="nav-item"> 
+				<a class="nav-link {% if request.path == mean_ocular_perfusion_pressure_url %}active{% endif %}" aria-current="page" href="{{ mean_ocular_perfusion_pressure_url }}">Mean Ocular Perfusion Pressure</a>
 			</li>
 		</ul>
 	</div>

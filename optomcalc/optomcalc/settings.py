@@ -18,8 +18,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-#ALLOWED_HOSTS = ['localhost', '0.0.0.0', 'optomcalc.shivan.xyz']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', 'optomcalc.shivan.xyz']
 
 # Application definition
 
@@ -123,24 +122,16 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # Production settings
 # DEBUG and ALLOWED_HOSTS set above
 
-#CSRF_COOKIE_SECURE = True
-
-#SESSION_COOKIE_SECURE = True
-
-#SECURE_SSL_REDIRECT = True
-
-#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', True)
-
-#SECURE_HSTS_SECONDS = 3600
-
-#SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
-#SECURE_HSTS_PRELOAD = True
-
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 # Development override
 if os.environ.get('DJANGO_DEVELOPMENT') == 'yes':
