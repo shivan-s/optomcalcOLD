@@ -35,7 +35,8 @@ class BVPCalculate(View):
         }
 
         # checks to see if sphere and cyl entered
-        # minimum needed to activate script is sphere, cyl for one eye, orignal bvd and new bvd
+        # minimum needed to activate script is sphere,
+        # cyl for one eye, orignal bvd and new bvd
 
         right_entered = all([ref["right_sphere"], ref["right_cylinder"]])
         left_entered = all([ref["left_sphere"], ref["left_cylinder"]])
@@ -80,15 +81,18 @@ class BVPCalculate(View):
                 meridian_sph = sphere
                 meridian_cyl = sphere + cylinder
 
-                # FIXME: divide by zero hotfix
-                # if meridian_cyl == 0:
-                #   meridian_cyl = 1
-                new_meridian_sph = 1 / (
-                    (1 / meridian_sph) - ((original_bvd - new_bvd) * 10 ** -3)
-                )
-                new_meridian_cyl = 1 / (
-                    (1 / meridian_cyl) - ((original_bvd - new_bvd) * 10 ** -3)
-                )
+                if meridian_sph == 0:
+                    new_meridian_sph = 0
+                else:
+                    new_meridian_sph = 1 / (
+                        (1 / meridian_sph) - ((original_bvd - new_bvd) * 10 ** -3)
+                    )
+                if meridian_cyl == 0:
+                    new_meridian_cyl = 0
+                else:
+                    new_meridian_cyl = 1 / (
+                        (1 / meridian_cyl) - ((original_bvd - new_bvd) * 10 ** -3)
+                    )
                 new_meridian_cyl = new_meridian_cyl - new_meridian_sph
 
                 return new_meridian_sph, new_meridian_cyl
