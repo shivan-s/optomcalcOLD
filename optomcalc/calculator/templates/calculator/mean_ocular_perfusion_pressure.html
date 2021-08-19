@@ -1,0 +1,57 @@
+{% extends 'calculator/base.html' %}
+
+{% block content %}
+
+	<h1 class="mt-1">{% block title %}Mean Ocular Perfusion Pressure{% endblock %}</h1>
+	<hr />
+	<div class="row">
+		<div hx-include="#input"
+			 hx-post="/mopp_calculate/"
+			 hx-target="#submitted"
+			 hx-swap="innerHTML"
+			 hx-trigger="keydown delay:250ms, click delay:250ms"
+			 class="col-md">
+			<form id="input">
+				<div class="row">
+					<div class="col-sm">
+						<label for="systolic_bp">Systolic BP (mmHg)</label>
+						<input class="form-control"
+							   min="0"
+							   type="number" 
+							   name="systolic_bp">
+					</div>
+					<div class="col-sm">
+						<label for="diastolic_bp">Diastolic BP (mmHg)</label>
+						<input class="form-control" 
+							   min="0"
+							   type="number" 
+							   name="diastolic_bp">
+					</div>
+					<div class="col-sm">
+						<label for="iop">IOP (mmHg)</label>
+						<input class="form-control" 
+							   type="number" 
+							   min="0"
+							   name="iop">
+					</div>
+				</div>
+							</form>
+			<div class="mt-2">
+				<div id="submitted">
+					{{ answer }}
+				</div>
+			</div>
+		</div>
+		
+		<div class="col mt-2">
+			<h3>Information</h3>
+			<p><b>Mean Ocular Perfusion Pressure (MOPP)</b> is used to determine the risk of glaucoma. If this value is below 50 mmHg, then this is associated with higher prevalence of glaucoma.</p>
+			<p>In order to calculate this, we first calculate <b>Mean Arterial Pressure (MAP)</b>:</p>
+			<p>
+			$$ MAP = Diastolic BP + \frac{1}{3}(Systolic BP - Diastolic BP)$$</p>
+			<p>Next, we can determine MOPP:</p>
+			$$ MOPP = \frac{2}{3}(MAP - IOP) $$
+		</div>
+	</div>
+
+{% endblock %}
