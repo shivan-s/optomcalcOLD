@@ -1,16 +1,15 @@
 from django.http import HttpResponse
 from django.views import View
 
-class CTCalculate(View):
 
+class CTCalculate(View):
     def post(self, request):
-        """Calculates the cylindrical tranposition
-        """
-        names = { 
-                'sphere': 'Sphere',
-                'cylinder': 'Cylinder',
-                'axis': 'Axis',
-                }
+        """Calculates the cylindrical tranposition"""
+        names = {
+            "sphere": "Sphere",
+            "cylinder": "Cylinder",
+            "axis": "Axis",
+        }
 
         ref = (self.request.POST).dict()
 
@@ -23,12 +22,12 @@ class CTCalculate(View):
             </div>
             """
         else:
-            ref = {k:float(v) for k, v in ref.items()}
-            sphere = ref['sphere'] 
-            cylinder = ref['cylinder']
-            axis = ref['axis']
+            ref = {k: float(v) for k, v in ref.items()}
+            sphere = ref["sphere"]
+            cylinder = ref["cylinder"]
+            axis = ref["axis"]
 
-            warning = ''
+            warning = ""
             if cylinder == 0:
                 warning = """
                 <div class="alert alert-warning" role="alert">
@@ -38,7 +37,7 @@ class CTCalculate(View):
             if axis > 180:
                 error_axis = """
                 <div class="alert alert-danger" role="alert">
-                   <b>Axis</b> must between 0 to 180 degrees 
+                   <b>Axis</b> must between 0 to 180 degrees
                 </div>
                 """
                 return HttpResponse(error_axis)
@@ -49,9 +48,11 @@ class CTCalculate(View):
             if axis == 180:
                 trans_axis = 90
             elif axis > 90:
-                trans_axis = 180 - axis 
+                trans_axis = 180 - axis
 
-            answer = warning + f"""
+            answer = (
+                warning
+                + f"""
             <table class="table table-striped table-hover"
                 <thead>
                     <th scope="row">Sphere:</th>
@@ -68,5 +69,5 @@ class CTCalculate(View):
                 </tbody>
             </table>
             """
+            )
         return HttpResponse(answer)
-
