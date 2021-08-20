@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.views import View
 
+from . import special_return as sr
 
 class MBSCalculate(View):
     def post(self, request):
@@ -24,11 +25,8 @@ class MBSCalculate(View):
         if not all(ref.values()):
             # checking for invalid values (nulls) and listing them
             err = [names[k] for k, v in ref.items() if not v]
-            answer = f"""
-            <div class="alert alert-danger" role="alert">
-                Missing Values: <b>{'</b>, <b>'.join(err)}</b>
-            </div>
-            """
+            answer = sr.err(ref, names)
+
         else:
             ref = {k: float(v) for k, v in ref.items()}
             right_pd = ref["right_pd"]
@@ -36,16 +34,12 @@ class MBSCalculate(View):
             frame_size = ref["frame_size"]
             frame_dbl = ref["frame_dbl"]
             effective_diameter = ref["effective_diameter"]
-            # source of information - https://www.insightnews.com.au/finding-the-minimum-lens-blank-size-part-2-2/
             frame_pd = frame_size + frame_dbl
 
             warning = ""
             if effective_diameter < frame_size:
-                warning = """
-                <div class="alert alert-warning" role="alert">
-                    Warning: <b>Effective Diameter</b> is smaller than <b>Frame Size</b>
-                </div>
-                """
+                warning = sr.alert("Warning: <b>Effective Diameter</b> is smaller than <b>Frame Size</b>",
+                'warning')
 
             right_mbs = _minimum_blank_size(right_pd)
             left_mbs = _minimum_blank_size(left_pd)
@@ -67,6 +61,7 @@ class MBSCalculate(View):
                 </tbody>
             </table>
             """
+            
             )
         return HttpResponse(answer)
 
