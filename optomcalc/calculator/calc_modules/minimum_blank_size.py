@@ -3,6 +3,7 @@ from django.views import View
 
 from . import special_return as sr
 
+
 class MBSCalculate(View):
     def post(self, request):
         def _minimum_blank_size(mono_pd: float):
@@ -38,8 +39,10 @@ class MBSCalculate(View):
 
             warning = ""
             if effective_diameter < frame_size:
-                warning = sr.alert("Warning: <b>Effective Diameter</b> is smaller than <b>Frame Size</b>",
-                'warning')
+                warning = sr.alert(
+                    "Warning: <b>Effective Diameter</b> is smaller than <b>Frame Size</b>",
+                    "warning",
+                )
 
             right_mbs = _minimum_blank_size(right_pd)
             left_mbs = _minimum_blank_size(left_pd)
@@ -61,7 +64,6 @@ class MBSCalculate(View):
                 </tbody>
             </table>
             """
-            
             )
         return HttpResponse(answer)
 
