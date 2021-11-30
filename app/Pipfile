@@ -4,8 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+django = "*"
+bs4 = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+sentry-sdk = "*"
 
 [dev-packages]
+pytest-django = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.8"

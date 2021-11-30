@@ -1,29 +1,16 @@
-version: '3.7'
+version: "3.7"
 
 services:
-        db:
-                image: 'postgres:latest'
-                ports:
-                        - "5432:5432"
-                env_file:
-                        - ./optomcalc/optomcalc/.env
-                volumes:
-                        - ./db-data/:/var/lib/postgresql/data/
-                restart: always
-        web:
-                container_name: web
-                volumes:
-                        - static:/usr/src/optomcalc/optomcalc/static
-                        - .:/usr/src/
-                env_file:
-                        - ./optomcalc/optomcalc/.env
-                build: .
-                working_dir: /usr/src/optomcalc/
-                command: sh -c "./entrypoint.sh"
-                ports:
-                        - "8000:8000"
-                depends_on:
-                        - db
-                restart: always
-volumes:
-        static:
+  web:
+    build: ./app
+    env_file:
+      - ./app/.env
+    ports:
+      - "8000:8000"
+
+    restart: always
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:8000"

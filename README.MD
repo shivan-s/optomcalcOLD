@@ -1,6 +1,7 @@
 # OptomCalc
-*Calculations for Optometry*
----
+
+## _Calculations for Optometry_
+
 By Shivan Sivakumaran
 
 ## Introduction
@@ -13,19 +14,20 @@ The is a website that contains common calculations performed by Optometrists and
 
 ### Setting up the .env files
 
-Below is the .env files which is stored in `/optomcalc/optomcalc/optomcalc` (the same directory as `settings.py`).
+Below is the .env files which is stored in `/app`.
 
 ```
-SECRET_KEY=<django secret key> 
-  
-# Database variables 
-POSTGRES_DB=<database name>
-POSTGRES_USER=<username>
-POSTGRES_PASSWORD=<password>
-POSTGRES_HOST=<host e.g. 127.0.0.1>
-POSTGRES_PORT=<port number e.g. 5432>
+SECRET_KEY=<django secret key>
+SENTRY=<DSN>
 ```
 
+### Running in development
+
+To run locally run:
+
+```
+make run
+```
 
 ### Production Set up
 
@@ -36,16 +38,23 @@ This includes the `nginx` and `certbot` set up, which are on the server. The `po
 `Gunicorn` is used as a the wsgi service.
 
 `Docker-compose` is used to orchestrate the entire project:
+
 ```
+
 $ sudo docker-compose up --build
+
 ```
 
 ### Local running
 
 This is weird and I'm sure there are plenty workarounds. Since I do not have `nginx` running on my local machine, if I run the `docker-compose` command as if it were in production, the site will work. However, I will not have any static files. This is because `nginx` serves those static files. I use `docker-compose` to spin up at `postgresql` database and then run:
+
 ```
+
 $ pipenv run python manage.py runserver
+
 ```
+
 to create a local django instance, which is connected to the dockerised `postresql` database. I can a function application with static files that I can then make edits to my code.
 
 ### Code structures
@@ -53,6 +62,7 @@ to create a local django instance, which is connected to the dockerised `postres
 Below is how the application is structured
 
 ```
+
 ├── db-data # Database
 ├── optomcalc
 │   ├── calculator # application or 'calculator' code
@@ -61,11 +71,16 @@ Below is how the application is structured
 │   │   └── tests
 │   ├── optomcalc # admin app
 │   └── static # static files for nginx
-│       └── calculator
-│           ├── css
-│           └── js
+│   └── calculator
+│   ├── css
+│   └── js
 
 ```
+
 ## Feedback
 
 Please [contact me](mailto:shivan@shivansivakumaran.com) if you have any questions.
+
+```
+
+```

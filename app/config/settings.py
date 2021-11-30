@@ -1,26 +1,27 @@
 import os
 from pathlib import Path
-import logging
 
-from dotenv import load_dotenv
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
-load_dotenv()
+DSN = os.environ.get("SENTRY_DSN")
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+sentry_sdk.init(
+    dsn=f"https://{DSN}@o1039828.ingest.sentry.io/6084083",
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,
+    send_default_pii=True,
+)
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "optomcalc.shivan.xyz"]
-
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -43,7 +44,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "optomcalc.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -61,25 +62,20 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "optomcalc.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "HOST": os.environ.get("POSTGRES_HOST"),
-        "NAME": os.environ.get("POSTGRES_NAME"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
 
 # Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

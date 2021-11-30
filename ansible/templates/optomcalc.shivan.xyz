@@ -1,0 +1,26 @@
+upstream optomcalc_web {
+	server 0.0.0.0:{{ app_port }};
+}
+
+server {
+	server_name {{ app_name }}.shivan.xyz;
+	access_log /var/log/nginx/{{ app_name }}.shivan.xyz.log;
+	
+	location /static/ {
+		root /home/shivan/{{ app_name }}/optomcalc;
+	}
+
+	location / {
+		include proxy_params;
+		proxy_pass http://optomcalc_web;
+		proxy_connect_timeout 75s;
+		proxy_read_timeout 300s;
+	}
+
+	location = / {
+		include proxy_params;
+		proxy_pass http://optomcalc_web;
+		proxy_connect_timeout 75s;
+		proxy_read_timeout 300s;
+	}
+}
