@@ -1,5 +1,7 @@
 # OptomCalc
 
+[![Build](https://github.com/ShivanS93/optomcalc/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/ShivanS93/optomcalc/actions/workflows/main.yml)
+
 ## _Calculations for Optometry_
 
 By Shivan Sivakumaran

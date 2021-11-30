@@ -1,24 +1,21 @@
 run:
 	@echo "Running application"
-	cd app && \
-	pipenv run python manage.py runserver
+	pipenv run python app/manage.py runserver
 
 run-prod:
 	@echo "Running applicaition in docker container"
-	cd app && \
 	docker-compose up -d --build
 
-migrate: 
-	cd app && \
-	pipenv run python manage.py collectstatic --no-input && \
-	pipenv run python manage.py makemigrations --no-input && \
-	pipenv run python manage.py migrate --no-input
+migrate:
+	pipenv run python app/manage.py collectstatic --no-input && \
+	pipenv run python app/manage.py makemigrations --no-input && \
+	pipenv run python app/manage.py migrate --no-input
 
 .PHONY: test
 test:
 	@echo "Running automated testing"
-	cd app && \
-	pipenv run pytest -vv
+	pipenv run pytest -vv app/:w
+
 
 deploy:
 	@echo "Deploying to remote server"
