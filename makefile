@@ -14,10 +14,9 @@ migrate:
 .PHONY: test
 test:
 	@echo "Running automated testing"
-	pipenv run pytest -vv app/:w
-
+	pipenv run pytest -vv app/
 
 deploy:
 	@echo "Deploying to remote server"
-	cp app/.env ansible/templates/.env
-	pipenv run ansible-playbook ansible/deploy.yml -i ansible.hosts -K
+	cp .env ansible/files/.env
+	pipenv run ansible-playbook ansible/deploy.yml -i ansible/hosts -K

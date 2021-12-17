@@ -9,6 +9,7 @@ bs4 = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 sentry-sdk = "*"
+ansible = "*"
 
 [dev-packages]
 pytest-django = "*"

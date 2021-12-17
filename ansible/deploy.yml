@@ -70,4 +70,4 @@
       shell: >
         cd /home/shivan/{{ app_name }} &&
         docker-compose down &&
-        docker-compose up -d --build
+        docker-compose up -d --build web

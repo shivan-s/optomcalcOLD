@@ -9,7 +9,7 @@ RUN pip install pipenv
 COPY Pipfile Pipfile.lock /code/
 RUN pipenv install
 
-COPY . /code/
+COPY /app Pipfile Pipfile.lock /code/
 
 RUN chmod +x ./entrypoint.sh
 

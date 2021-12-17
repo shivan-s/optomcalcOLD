@@ -23,3 +23,9 @@ web/media
 web/static/CACHE
 stats
 Dockerfile
+ansible/
+.github/
+.pre-commit-config.yaml
+LICENCE
+README.MD
+makefile
